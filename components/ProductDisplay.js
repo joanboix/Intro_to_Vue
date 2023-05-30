@@ -15,10 +15,10 @@ app.component('product-display', {
         <div class="product-info">
           <h1>{{ title }}</h1>
   
-          <p v-if="inStock">In Stock</p>
-          <p v-else>Out of Stock</p>
+          <p v-if="inStock">Disponible!</p>
+          <p v-else>Esgotades!</p>
   
-          <p>Shipping: {{ shipping }}</p>
+          <p>Gastos d'envio: {{ shipping }}</p>
           <ul>
             <li v-for="detail in details">{{ detail }}</li>
           </ul>
@@ -36,37 +36,40 @@ app.component('product-display', {
             :class="{ disabledButton: !inStock }" 
             :disabled="!inStock" 
             v-on:click="addToCart">
-            Add to Cart
+            Afegir a cistella
           </button>
         </div>
       </div>
-        <review-list v-if="reviews.length" :reviews="reviews"></review-list>
+      <review-list v-if="reviews.length" :reviews="reviews"></review-list>
       <review-form @review-submitted="addReview"></review-form>
     </div>`,
     data() {
       return {
-          product: 'Socks',
-          brand: 'Vue Mastery',
+          product: 'Fundes',
+          brand: 'iPhone 13',
           selectedVariant: 0,
-          details: ['50% cotton', '30% wool', '20% polyester'],
+          details: ['80% silicona', '20% Microfibra'],
           variants: [
-            { id: 2234, color: 'green', image: './assets/images/socks_green.jpg', quantity: 50 },
-            { id: 2235, color: 'blue', image: './assets/images/socks_blue.jpg', quantity: 0 },
+            { id: 2234, color: 'black', image: './assets/images/iphone_negre.jpg', quantity: 50, },
+            { id: 2235, color: 'red', image: './assets/images/iphone_roig.jpg', quantity: 0,  },
           ],
-            reviews: []
+          reviews: []
       }
     },
     methods: {
         addToCart() {
             this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
         },
+        updateVariant(index) {
+            this.selectedVariant = index
+        },
         addReview(review) {
-            this.reviews.push(review)
+          this.reviews.push(review)
         }
     },
     computed: {
         title() {
-            return this.brand + ' ' + this.product
+            return this.product + ' ' + this.brand
         },
         image() {
             return this.variants[this.selectedVariant].image
@@ -76,7 +79,7 @@ app.component('product-display', {
         },
         shipping() {
           if (this.premium) {
-            return 'Free'
+            return 'Gratis!'
           }
           return 2.99
         }
